@@ -1,0 +1,55 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block title %}Préstamos{% endblock %}
+
+{% block body %}
+  <h1>Préstamos</h1>
+  <a class="btn btn-primary" href="{% url 'prestamo_create' %}"
+    >Agregar Préstamo</a
+  >
+  <table class="table mt-4">
+    <thead class="table-dark">
+      <tr>
+        <th>#</th>
+        <th>Empleado</th>
+        <th>Libro</th>
+        <th>Usuario</th>
+        <th>Fecha de Préstamo</th>
+        <th>Fecha de Devolución</th>
+        <th>Monto Por Día</th>
+        <th>Cantidad de Días</th>
+        <th>Comentario</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for prestamo in prestamos %}
+        <tr>
+          <td>{{ prestamo.id }}</td>
+          <td>{{ prestamo.empleado }}</td>
+          <td>{{ prestamo.libro }}</td>
+          <td>{{ prestamo.usuario }}</td>
+          <td>{{ prestamo.fecha_prestamo }}</td>
+          <td>{{ prestamo.fecha_devolucion }}</td>
+          <td>{{ prestamo.monto_por_dia }}</td>
+          <td>{{ prestamo.cantidad_dias }}</td>
+          <td>{{ prestamo.comentario }}</td>
+          <td>{{ prestamo.estado|yesno:"Activo,Inactivo" }}</td>
+          <td>
+            <a
+              class="btn btn-warning btn-sm"
+              href="{% url 'prestamo_update' prestamo.id %}"
+              >Editar</a
+            >
+            <a
+              class="btn btn-danger btn-sm"
+              href="{% url 'prestamo_delete' prestamo.id %}"
+              >Eliminar</a
+            >
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

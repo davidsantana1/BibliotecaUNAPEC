@@ -1,0 +1,47 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block body %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Gestión de Bibliografías</h1>
+    <a href="{% url 'tipo_bibliografia_create' %}" class="btn btn-primary mb-3"
+      >Agregar Nueva Bibliografía</a
+    >
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for bibliografia in bibliografias %}
+          <tr>
+            <td>{{ bibliografia.id }}</td>
+            <td>{{ bibliografia.descripcion }}</td>
+            <td>{{ bibliografia.estado|yesno:"Activo,Inactivo" }}</td>
+            <td>
+              <a
+                href="{% url 'tipo_bibliografia_update' bibliografia.pk %}"
+                class="btn btn-warning btn-sm"
+                >Editar</a
+              >
+              <a
+                href="{% url 'tipo_bibliografia_delete' bibliografia.pk %}"
+                class="btn btn-danger btn-sm"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="3" class="text-center">
+              No hay bibliografías disponibles.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

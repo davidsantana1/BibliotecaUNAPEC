@@ -1,0 +1,12 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block title %}Agregar/Actualizar Autor{% endblock %}
+
+{% block body %}
+  <h1>Agregar/Actualizar Autor</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "biblioteca/layout.html" %}
+
+{% block body %}
+  <div class="d-flex flex-column align-items-center">
+    <h2 class="mb-4">Registrarse</h2>
+
+    {% if message %}
+      <div class="mb-3">{{ message }}</div>
+    {% endif %}
+
+    <form
+      class="d-flex flex-column gap-4 w-25 mb-3"
+      action="{% url 'register' %}"
+      method="post"
+    >
+      {% csrf_token %}
+
+      {% for field in form %}
+        {{ field }}
+      {% endfor %}
+      <div class="form-group">
+        <input
+          class="form-control mb-2"
+          type="password"
+          name="confirmation"
+          placeholder="Confirmar Contraseña"
+        />
+      </div>
+      <input class="btn btn-primary" type="submit" value="Register" />
+    </form>
+
+    ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Iniciar Sesión.</a>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var tipoPersonaSelect = document.querySelector(
+        'select[name="tipo_persona"]',
+      );
+      if (tipoPersonaSelect) {
+        // Deshabilitar la opción con el valor vacío
+        var options = tipoPersonaSelect.options;
+        for (var i = 0; i < options.length; i++) {
+          if (options[i].value === "") {
+            options[i].disabled = true;
+            break;
+          }
+        }
+      }
+    });
+  </script>
+{% endblock %}
