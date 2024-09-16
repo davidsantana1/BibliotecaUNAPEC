@@ -1,4 +1,5 @@
-# Funcionalidades
+# Sistema de Gestión de Biblioteca
+## Funcionalidades
 1. Gestión de Tipos de Bibliografía
 2. Gestión de Editoras
 3. Gestión de Ciencias
