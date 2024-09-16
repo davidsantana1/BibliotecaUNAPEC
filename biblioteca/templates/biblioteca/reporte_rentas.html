@@ -10,30 +10,32 @@
 
   {% if prestamos %}
     <h2>Resultados del Reporte</h2>
-    <table class="table">
-      <thead class="table-dark">
-        <tr>
-          <th>Libro</th>
-          <th>Fecha de Inicio</th>
-          <th>Fecha de Devolución</th>
-          <th>Tipo de Bibliografía</th>
-          <th>Idioma</th>
-          <th>Empleado</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for prestamo in prestamos %}
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead class="table-dark">
           <tr>
-            <td>{{ prestamo.libro.descripcion }}</td>
-            <td>{{ prestamo.fecha_prestamo }}</td>
-            <td>{{ prestamo.fecha_devolucion }}</td>
-            <td>{{ prestamo.libro.tipo_bibliografia }}</td>
-            <td>{{ prestamo.libro.idioma }}</td>
-            <td>{{ prestamo.empleado.nombre }}</td>
+            <th>Libro</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha de Devolución</th>
+            <th>Tipo de Bibliografía</th>
+            <th>Idioma</th>
+            <th>Empleado</th>
           </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {% for prestamo in prestamos %}
+            <tr>
+              <td>{{ prestamo.libro.descripcion }}</td>
+              <td>{{ prestamo.fecha_prestamo }}</td>
+              <td>{{ prestamo.fecha_devolucion }}</td>
+              <td>{{ prestamo.libro.tipo_bibliografia }}</td>
+              <td>{{ prestamo.libro.idioma }}</td>
+              <td>{{ prestamo.empleado.nombre }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   {% else %}
     <p>No se encontraron resultados para los criterios seleccionados.</p>
   {% endif %}
