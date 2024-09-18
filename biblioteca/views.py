@@ -60,12 +60,16 @@ class NewAutorForm(ModelForm):
             "idioma_nativo": forms.Select(attrs={"class": "form-select mb-2"}),
             "estado": forms.CheckboxInput(attrs={"class": "form-check-input mb-2"}),
         }
+        labels = {
+            "pais_origen": "País de Origen"
+        }
 
 
 class NewLibroForm(ModelForm):
     class Meta:
         model = Libro
         fields = [
+            "titulo",
             "descripcion",
             "signatura_topografica",
             "isbn",
@@ -78,6 +82,7 @@ class NewLibroForm(ModelForm):
             "estado",
         ]
         widgets = {
+            "titulo": forms.TextInput(attrs={"class": "form-control mb-2"}),
             "descripcion": forms.TextInput(attrs={"class": "form-control mb-2"}),
             "signatura_topografica": forms.TextInput(
                 attrs={"class": "form-control mb-2"}
@@ -92,6 +97,7 @@ class NewLibroForm(ModelForm):
             "estado": forms.CheckboxInput(attrs={"class": "form-check-input mb-2"}),
         }
         labels = {
+            "titulo": "Título",
             "descripcion": "Descripción",
             "signatura_topografica": "Signatura Topográfica",
             "tipo_bibliografia": "Tipo de Bibliografía",
@@ -268,8 +274,11 @@ def logout_view(request):
 
 def register(request):
     if request.method == "POST":
-        username = request.POST["username"]
+        username = request.POST["username"].strip()
         email = request.POST["email"]
+        no_carnet = request.POST["no_carnet"].strip()
+        cedula = request.POST["cedula"]
+        tipo_persona = request.POST["tipo_persona"]
 
         # Ensure password matches confirmation
         password = request.POST["password"]
@@ -281,18 +290,42 @@ def register(request):
                 {"message": "Las contraseñas deben ser iguales."},
             )
 
-        # Attempt to create new user
-        try:
-            user = User.objects.create_user(username, email, password)
-            user.save()
-        except IntegrityError:
+        # Verificar si el username o el no_carnet ya existen
+        if User.objects.filter(username=username).exists():
             return render(
                 request,
                 "biblioteca/register.html",
                 {"message": "Este nombre de usuario ya está siendo utilizado."},
             )
+
+        if User.objects.filter(no_carnet=no_carnet).exists():
+            return render(
+                request,
+                "biblioteca/register.html",
+                {"message": "Este número de carnet ya está siendo utilizado."},
+            )
+
+        try:
+            # Crear el usuario solo con username, email y password
+            user = User.objects.create_user(username=username, email=email, password=password)
+
+            # Asignar los campos adicionales
+            user.no_carnet = no_carnet
+            user.cedula = cedula
+            user.tipo_persona = tipo_persona
+            user.save()
+
+        except IntegrityError as e:
+            print(e)  # Ver el error exacto en la consola
+            return render(
+                request,
+                "biblioteca/register.html",
+                {"message": "Error al crear el usuario."},
+            )
+
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
+    
     else:
         form = NewUsuarioForm()
         return render(request, "biblioteca/register.html", {"form": form})
@@ -506,11 +539,18 @@ def libro_update(request, pk):
     if request.method == "POST":
         form = NewLibroForm(request.POST, instance=libro)
         if form.is_valid():
-            form.save()
-            return redirect("libro_list")
+            # Obtén el ISBN del libro antes de guardar
+            new_isbn = form.cleaned_data['isbn']
+            # Excluye el libro actual de la validación
+            if Libro.objects.exclude(pk=pk).filter(isbn=new_isbn).exists():
+                form.add_error('isbn', 'El ISBN ya está en uso.')
+            else:
+                form.save()
+                return redirect("libro_list")
     else:
         form = NewLibroForm(instance=libro)
     return render(request, "biblioteca/libros/libro_form.html", {"form": form})
+
 
 
 @login_required

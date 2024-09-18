@@ -11,6 +11,7 @@
         <tr>
           <th>#</th>
           <th>Título</th>
+          <th>Descripción</th>
           <th>Signatura Topográfica</th>
           <th>ISBN</th>
           <th>Tipo de Bibliografía</th>
@@ -27,7 +28,12 @@
         {% for libro in libros %}
           <tr>
             <td>{{ libro.id }}</td>
-            <td>{{ libro.descripcion }}</td>
+            <td>{{ libro.titulo }}</td>
+            {% if libro.descripcion != None %}
+              <td>{{ libro.descripcion }}</td>
+            {% else %}
+              <td></td>
+            {% endif %}
             <td>{{ libro.signatura_topografica }}</td>
             <td>{{ libro.isbn }}</td>
             <td>{{ libro.tipo_bibliografia }}</td>

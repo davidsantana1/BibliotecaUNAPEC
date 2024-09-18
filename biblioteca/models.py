@@ -18,18 +18,18 @@ class User(AbstractUser):
 
     groups = models.ManyToManyField(
         "auth.Group",
-        related_name="biblioteca_user_groups",  # Añade un related_name único
+        related_name="biblioteca_user_groups",
         blank=True,
     )
 
     user_permissions = models.ManyToManyField(
         "auth.Permission",
-        related_name="biblioteca_user_permissions",  # Añade un related_name único
+        related_name="biblioteca_user_permissions", 
         blank=True,
     )
 
     def __str__(self):
-        return self.username  # o self.nombre si prefieres
+        return self.username  
 
 
 class TipoBibliografia(models.Model):
@@ -67,7 +67,8 @@ class Autor(models.Model):
 
 
 class Libro(models.Model):
-    descripcion = models.CharField(max_length=255)
+    titulo = models.CharField(max_length=255, default="")
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
     signatura_topografica = models.CharField(max_length=255)
     isbn = models.CharField(max_length=13, unique=True)
     tipo_bibliografia = models.ForeignKey(
@@ -81,7 +82,7 @@ class Libro(models.Model):
     estado = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.descripcion
+        return self.titulo
 
 
 class Empleado(models.Model):
