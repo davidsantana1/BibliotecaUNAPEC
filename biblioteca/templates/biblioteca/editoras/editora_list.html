@@ -1,0 +1,47 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block body %}
+  <div class="container mt-4">
+    <h1 class="mb-4">Gestión de Editoras</h1>
+    <a href="{% url 'editora_create' %}" class="btn btn-primary mb-3"
+      >Agregar Nueva Editora</a
+    >
+    <table class="table">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for editora in editoras %}
+          <tr>
+            <td>{{ editora.id }}</td>
+            <td>{{ editora.descripcion }}</td>
+            <td>{{ editora.estado|yesno:"Activo,Inactivo" }}</td>
+            <td>
+              <a
+                href="{% url 'editora_update' editora.pk %}"
+                class="btn btn-warning btn-sm"
+                >Editar</a
+              >
+              <a
+                href="{% url 'editora_delete' editora.pk %}"
+                class="btn btn-danger btn-sm"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="4" class="text-center">
+              No hay editoras disponibles.
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

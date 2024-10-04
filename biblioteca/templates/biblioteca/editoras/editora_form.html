@@ -1,0 +1,17 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block body %}
+  <div class="container mt-4">
+    <h1 class="mb-4">
+      {% if form.instance.pk %}Editar{% else %}Agregar{% endif %} Editora
+    </h1>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar</button>
+      <a href="{% url 'editora_list' %}" class="btn btn-outline-secondary"
+        >Cancelar</a
+      >
+    </form>
+  </div>
+{% endblock %}

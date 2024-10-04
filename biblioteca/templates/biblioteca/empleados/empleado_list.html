@@ -1,0 +1,49 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block title %}Empleados{% endblock %}
+
+{% block body %}
+  <h1>Empleados</h1>
+  <a class="btn btn-primary" href="{% url 'empleado_create' %}"
+    >Agregar Empleado</a
+  >
+  <div class="table-responsive">
+    <table class="table mt-4">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>Cédula</th>
+          <th>No. Carnet</th>
+          <th>Tipo de Persona</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for empleado in empleados %}
+          <tr>
+            <td>{{ empleado.id }}</td>
+            <td>{{ empleado.nombre }}</td>
+            <td>{{ empleado.cedula }}</td>
+            <td>{{ empleado.no_carnet }}</td>
+            <td>{{ empleado.tipo_persona }}</td>
+            <td>{{ empleado.estado|yesno:"Activo,Inactivo" }}</td>
+            <td>
+              <a
+                class="btn btn-warning btn-sm"
+                href="{% url 'empleado_update' empleado.id %}"
+                >Editar</a
+              >
+              <a
+                class="btn btn-danger btn-sm"
+                href="{% url 'empleado_delete' empleado.id %}"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

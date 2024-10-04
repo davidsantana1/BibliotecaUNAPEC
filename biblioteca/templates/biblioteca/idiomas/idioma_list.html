@@ -1,0 +1,39 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block title %}Idiomas{% endblock %}
+
+{% block body %}
+  <h1>Idiomas</h1>
+  <a class="btn btn-primary" href="{% url 'idioma_create' %}">Agregar Idioma</a>
+  <table class="table mt-4">
+    <thead>
+      <tr class="table-dark">
+        <th>#</th>
+        <th>Descripción</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for idioma in idiomas %}
+        <tr>
+          <td>{{ idioma.id }}</td>
+          <td>{{ idioma.descripcion }}</td>
+          <td>{{ idioma.estado|yesno:"Activo,Inactivo" }}</td>
+          <td>
+            <a
+              class="btn btn-warning btn-sm"
+              href="{% url 'idioma_update' idioma.id %}"
+              >Editar</a
+            >
+            <a
+              class="btn btn-danger btn-sm"
+              href="{% url 'idioma_delete' idioma.id %}"
+              >Eliminar</a
+            >
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'biblioteca/layout.html' %}
+
+{% block title %}Autores{% endblock %}
+
+{% block body %}
+  <h1>Autores</h1>
+  <a class="btn btn-primary" href="{% url 'autor_create' %}">Agregar Autor</a>
+  <div class="table-responsive">
+    <table class="table mt-4">
+      <thead class="table-dark">
+        <tr>
+          <th>#</th>
+          <th>Nombre</th>
+          <th>País de Origen</th>
+          <th>Idioma Nativo</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for autor in autores %}
+          <tr>
+            <td>{{ autor.id }}</td>
+            <td>{{ autor.nombre }}</td>
+            <td>{{ autor.pais_origen }}</td>
+            <td>{{ autor.idioma_nativo }}</td>
+            <td>{{ autor.estado|yesno:"Activo,Inactivo" }}</td>
+            <td>
+              <a
+                class="btn btn-warning btn-sm"
+                href="{% url 'autor_update' autor.id %}"
+                >Editar</a
+              >
+              <a
+                class="btn btn-danger btn-sm"
+                href="{% url 'autor_delete' autor.id %}"
+                >Eliminar</a
+              >
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

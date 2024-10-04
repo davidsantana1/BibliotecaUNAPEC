@@ -1,0 +1,142 @@
+{% extends "biblioteca/layout.html" %}
+
+{% block body %}
+  <h2 class="mb-4">Biblioteca UNAPEC</h2>
+  <div class="row mb-4">
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-bookmark-fill fs-2"></i>
+            <h5 class="card-title mb-0">Tipos de Bibliografía</h5>
+          </div>
+          <a href="{% url 'tipo_bibliografia_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-pencil-fill fs-2"></i>
+            <h5 class="card-title mb-0">Editoras</h5>
+          </div>
+          <a href="{% url 'editora_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-calculator-fill fs-2"></i>
+            <h5 class="card-title mb-0">Ciencias</h5>
+          </div>
+          <a href="{% url 'ciencia_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-translate fs-2"></i>
+            <h5 class="card-title mb-0">Idiomas</h5>
+          </div>
+          <a href="{% url 'idioma_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-4">
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-person-check-fill fs-2"></i>
+            <h5 class="card-title mb-0">Autores</h5>
+          </div>
+          <a href="{% url 'autor_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-book-fill fs-2"></i>
+            <h5 class="card-title mb-0">Libros</h5>
+          </div>
+          <a href="{% url 'libro_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-briefcase-fill fs-2"></i>
+            <h5 class="card-title mb-0">Empleados</h5>
+          </div>
+          <a href="{% url 'empleado_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-box2-fill fs-2"></i>
+            <h5 class="card-title mb-0">Préstamos y Devoluciones</h5>
+          </div>
+          <a href="{% url 'prestamo_list' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-search fs-2"></i>
+            <h5 class="card-title mb-0">Buscar Préstamos</h5>
+          </div>
+          <a href="{% url 'buscar_libros' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-3 mb-3 mb-sm-0">
+      <div class="card align-items-center">
+        <div class="card-body text-center">
+          <div class="d-flex gap-2 align-items-center mb-2">
+            <i class="bi bi-list-check fs-2"></i>
+            <h5 class="card-title mb-0">Reporte de Rentas</h5>
+          </div>
+          <a href="{% url 'reporte_rentas' %}" class="btn btn-danger"
+            >Ver Listado</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
