@@ -24,12 +24,12 @@ class User(AbstractUser):
 
     user_permissions = models.ManyToManyField(
         "auth.Permission",
-        related_name="biblioteca_user_permissions", 
+        related_name="biblioteca_user_permissions",
         blank=True,
     )
 
     def __str__(self):
-        return self.username  
+        return self.username
 
 
 class TipoBibliografia(models.Model):
@@ -46,6 +46,15 @@ class Editora(models.Model):
 
     def __str__(self):
         return self.descripcion
+
+
+class Ciencia(models.Model):
+    nombre = models.CharField(max_length=255)
+    descripcion = models.TextField(blank=True, null=True)
+    estado = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nombre
 
 
 class Idioma(models.Model):
@@ -77,7 +86,9 @@ class Libro(models.Model):
     autores = models.ManyToManyField(Autor)
     editora = models.ForeignKey(Editora, on_delete=models.SET_NULL, null=True)
     ano_publicacion = models.PositiveIntegerField()
-    ciencia = models.CharField(max_length=255)
+    ciencia = models.ForeignKey(
+        Ciencia, on_delete=models.SET_NULL, null=True, blank=True
+    )
     idioma = models.ForeignKey(Idioma, on_delete=models.SET_NULL, null=True)
     estado = models.BooleanField(default=True)
 

@@ -28,6 +28,11 @@ urlpatterns = [
     path("editoras/crear/", views.editora_create, name="editora_create"),
     path("editoras/<int:pk>/editar/", views.editora_update, name="editora_update"),
     path("editoras/<int:pk>/eliminar/", views.editora_delete, name="editora_delete"),
+    # URLs para Ciencias
+    path("ciencias/", views.ciencia_list, name="ciencia_list"),
+    path("ciencias/crear/", views.ciencia_create, name="ciencia_create"),
+    path("ciencias/<int:pk>/editar/", views.ciencia_update, name="ciencia_update"),
+    path("ciencias/<int:pk>/eliminar/", views.ciencia_delete, name="ciencia_delete"),
     # URLs para Idiomas
     path("idiomas/", views.idioma_list, name="idioma_list"),
     path("idiomas/nuevo/", views.idioma_create, name="idioma_create"),

@@ -15,6 +15,7 @@ from .models import (
     Idioma,
     Autor,
     Libro,
+    Ciencia,
     Empleado,
     PrestamoDevolucion,
 )
@@ -40,6 +41,17 @@ class NewEditoraForm(ModelForm):
         }
 
 
+class NewCienciaForm(ModelForm):
+    class Meta:
+        model = Ciencia
+        fields = ["nombre", "descripcion", "estado"]
+        widgets = {
+            "nombre": forms.TextInput(attrs={"class": "form-control mb-2"}),
+            "descripcion": forms.TextInput(attrs={"class": "form-control mb-2"}),
+            "estado": forms.CheckboxInput(attrs={"class": "form-check-input mb-2"}),
+        }
+
+
 class NewIdiomaForm(ModelForm):
     class Meta:
         model = Idioma
@@ -60,9 +72,7 @@ class NewAutorForm(ModelForm):
             "idioma_nativo": forms.Select(attrs={"class": "form-select mb-2"}),
             "estado": forms.CheckboxInput(attrs={"class": "form-check-input mb-2"}),
         }
-        labels = {
-            "pais_origen": "País de Origen"
-        }
+        labels = {"pais_origen": "País de Origen"}
 
 
 class NewLibroForm(ModelForm):
@@ -92,7 +102,7 @@ class NewLibroForm(ModelForm):
             "autores": forms.SelectMultiple(attrs={"class": "form-control mb-2"}),
             "editora": forms.Select(attrs={"class": "form-select mb-2"}),
             "ano_publicacion": forms.NumberInput(attrs={"class": "form-control mb-2"}),
-            "ciencia": forms.TextInput(attrs={"class": "form-control mb-2"}),
+            "ciencia": forms.Select(attrs={"class": "form-select mb-2"}),
             "idioma": forms.Select(attrs={"class": "form-select mb-2"}),
             "estado": forms.CheckboxInput(attrs={"class": "form-check-input mb-2"}),
         }
@@ -210,10 +220,11 @@ class BusquedaLibroForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "date", "class": "form-control"}),
         label="Fecha Fin",
     )
-    ciencia = forms.CharField(
+    ciencia = forms.ModelChoiceField(
+        queryset=Ciencia.objects.all(),
         required=False,
         label="Ciencia",
-        widget=forms.TextInput(attrs={"class": "form-control"}),
+        widget=forms.Select(attrs={"class": "form-select"}),
     )
 
 
@@ -307,7 +318,9 @@ def register(request):
 
         try:
             # Crear el usuario solo con username, email y password
-            user = User.objects.create_user(username=username, email=email, password=password)
+            user = User.objects.create_user(
+                username=username, email=email, password=password
+            )
 
             # Asignar los campos adicionales
             user.no_carnet = no_carnet
@@ -325,7 +338,7 @@ def register(request):
 
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
-    
+
     else:
         form = NewUsuarioForm()
         return render(request, "biblioteca/register.html", {"form": form})
@@ -425,6 +438,50 @@ def editora_delete(request, pk):
         return redirect("editora_list")
     return render(
         request, "biblioteca/editoras/editora_confirm_delete.html", {"object": editora}
+    )
+
+
+@login_required
+def ciencia_list(request):
+    ciencias = Ciencia.objects.all()
+    return render(
+        request, "biblioteca/ciencias/ciencia_list.html", {"ciencias": ciencias}
+    )
+
+
+@login_required
+def ciencia_create(request):
+    if request.method == "POST":
+        form = NewCienciaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("ciencia_list")
+    else:
+        form = NewCienciaForm()
+    return render(request, "biblioteca/ciencias/ciencia_form.html", {"form": form})
+
+
+@login_required
+def ciencia_update(request, pk):
+    ciencia = get_object_or_404(Ciencia, pk=pk)
+    if request.method == "POST":
+        form = NewCienciaForm(request.POST, instance=ciencia)
+        if form.is_valid():
+            form.save()
+            return redirect("ciencia_list")
+    else:
+        form = NewCienciaForm(instance=ciencia)
+    return render(request, "biblioteca/ciencias/ciencia_form.html", {"form": form})
+
+
+@login_required
+def ciencia_delete(request, pk):
+    ciencia = get_object_or_404(Ciencia, pk=pk)
+    if request.method == "POST":
+        ciencia.delete()
+        return redirect("ciencia_list")
+    return render(
+        request, "biblioteca/ciencias/ciencia_confirm_delete.html", {"object": ciencia}
     )
 
 
@@ -540,17 +597,16 @@ def libro_update(request, pk):
         form = NewLibroForm(request.POST, instance=libro)
         if form.is_valid():
             # Obtén el ISBN del libro antes de guardar
-            new_isbn = form.cleaned_data['isbn']
+            new_isbn = form.cleaned_data["isbn"]
             # Excluye el libro actual de la validación
             if Libro.objects.exclude(pk=pk).filter(isbn=new_isbn).exists():
-                form.add_error('isbn', 'El ISBN ya está en uso.')
+                form.add_error("isbn", "El ISBN ya está en uso.")
             else:
                 form.save()
                 return redirect("libro_list")
     else:
         form = NewLibroForm(instance=libro)
     return render(request, "biblioteca/libros/libro_form.html", {"form": form})
-
 
 
 @login_required
